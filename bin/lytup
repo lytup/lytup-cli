@@ -1,0 +1,15 @@
+#!/usr/bin/env node
+
+var program = require("commander");
+var Channel = require("../lib").Channel;
+
+program.version(require("../package").version)
+// .usage("[options] [dir|file ...]")
+  .option("-u, --upload", "upload files")
+  .option("-d, --download", "download files");
+
+program.parse(process.argv);
+
+var channel = new Channel();
+if (program.upload) channel.upload(program.args);
+else if (program.download) channel.download(program.args);

@@ -1,0 +1,33 @@
+{
+  "name": "lytup",
+  "version": "0.0.0",
+  "description": "CLI for http://lytup.com",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lytup/cli.git"
+  },
+  "keywords": [
+    "file",
+    "transfer",
+    "cli"
+  ],
+  "author": "Vishal Rana",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lytup/cli/issues"
+  },
+  "dependencies": {
+    "ws": "~0.4.29",
+    "commander": "~2.0.0",
+    "qs": "~0.6.5",
+    "mime": "~1.2.11",
+    "async": "~0.2.9",
+    "lodash": "~1.3.1",
+    "progress": "~1.0.0",
+    "colors": "~0.6.2"
+  }
+}

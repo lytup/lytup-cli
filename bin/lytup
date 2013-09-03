@@ -4,7 +4,7 @@ var program = require("commander");
 var Channel = require("../lib").Channel;
 
 program.version(require("../package").version)
-// .usage("[options] [dir|file ...]")
+  .usage("[options] [files|url]")
   .option("-u, --upload", "upload files")
   .option("-d, --download", "download files");
 

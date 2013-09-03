@@ -12,4 +12,4 @@ program.parse(process.argv);
 
 var channel = new Channel();
 if (program.upload) channel.upload(program.args);
-else if (program.download) channel.download(program.args);
+else if (program.download) channel.download(program.args[0]);

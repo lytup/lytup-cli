@@ -1,4 +1,4 @@
-# Scale
+# Lytup-CLI
 CLI for Lytup.com
 
 ## Installation

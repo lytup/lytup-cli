@@ -1,9 +1,13 @@
 #!/usr/bin/env node
 
+process.title = "lytup";
+
 var program = require("commander");
+var updateNotifier = require("update-notifier");
+var pkg = require("../package");
 var Channel = require("../lib").Channel;
 
-program.version(require("../package").version)
+program.version(pkg.version)
   .usage("[options] [files|url]")
   .option("-u, --upload", "upload files")
   .option("-d, --download", "download files");
@@ -18,3 +22,11 @@ if (program.upload) {
   global.role = "RECEIVER";
   channel.download(program.args[0]);
 }
+
+// Check for newer version of lytup
+var notifier = updateNotifier({
+  packageName: pkg.name,
+  packageVersion: pkg.version,
+  updateCheckInterval: 1000 * 60 * 60 * 4
+});
+if (notifier.update) notifier.notify();

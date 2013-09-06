@@ -1,6 +1,6 @@
 {
   "name": "lytup",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "CLI for http://lytup.com",
   "main": "index.js",
   "scripts": {
@@ -18,7 +18,7 @@
   "author": "Vishal Rana",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/lytup/cli/issues"
+    "url": "https://github.com/lytup/lytup-cli/issues"
   },
   "dependencies": {
     "ws": "~0.4.29",
@@ -30,7 +30,8 @@
     "colors": "~0.6.2",
     "request": "~2.27.0",
     "string": "~1.5.1",
-    "sprintf": "~0.1.2"
+    "sprintf": "~0.1.2",
+    "update-notifier": "~0.1.5"
   },
   "bin": {
     "lytup": "bin/lytup"

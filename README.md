@@ -20,7 +20,7 @@ complete
 
 ### Download file(s)
 ```sh
-$ lytup -d http://lytup.com/Unp9t
+$ lytup -d Unp9t
 receiving 12.34 MB of file(s) | saving to "Unp9t.zip"
 [##############################] 100 % |     699 KB/s
 complete

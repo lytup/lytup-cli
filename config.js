@@ -1,14 +1,14 @@
 var config = {};
 var env = process.env.LYTUP_ENV;
 
-config.baseUri = "http://lytup.com",
-config.wsUri = "ws://lytup.com/ws"
-config.apiUri = config.baseUri + "/api"
+config.BASE_URI = "http://lytup.com",
+config.WS_URI = "ws://lytup.com/ws"
+config.API_URI = config.BASE_URI + "/api"
 
 if (env === "dev") {
-    config.baseUri = "http://localhost:8080",
-    config.wsUri = "ws://localhost:8080/ws"
-    config.apiUri = config.baseUri + "/api"
+    config.BASE_URI = "http://localhost:8080",
+    config.WS_URI = "ws://localhost:8080/ws"
+    config.API_URI = config.BASE_URI + "/api"
 }
 
 module.exports = config;

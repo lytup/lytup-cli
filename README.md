@@ -1,4 +1,4 @@
-# Lytup-CLI #
+# Lytup-CLI
 CLI for Lytup.com
 
 ## Installation

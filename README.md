@@ -1,5 +1,5 @@
-# Lytup-CLI
-CLI for Lytup.com - A blazing fast file transfer platform
+# Lytup CLI
+Command-line interface for [Lytup](http://lytup.com) - A blazing fast file transfer platform
 
 ## Installation
 ```sh

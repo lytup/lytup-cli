@@ -1,5 +1,5 @@
 # Lytup-CLI
-CLI for Lytup.com
+CLI for Lytup.comv - A blazing file transfer platform
 
 ## Installation
 ```sh

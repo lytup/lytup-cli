@@ -33,6 +33,7 @@
     "sprintf": "~0.1.2",
     "update-notifier": "~0.1.5"
   },
+  "preferGlobal": true,
   "bin": {
     "lytup": "bin/lytup"
   }

@@ -15,13 +15,8 @@ program.version(pkg.version)
 program.parse(process.argv);
 
 var channel = new Channel();
-if (program.upload) {
-  global.role = "SENDER";
-  channel.upload(program.args)
-} else if (program.download) {
-  global.role = "RECEIVER";
-  channel.download(program.args[0]);
-}
+if (program.upload) channel.upload(program.args)
+else if (program.download) channel.download(program.args[0]);
 
 // Check for newer version of lytup
 var notifier = updateNotifier({

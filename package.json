@@ -1,6 +1,6 @@
 {
   "name": "lytup",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "description": "CLI for http://lytup.com",
   "main": "index.js",
   "scripts": {

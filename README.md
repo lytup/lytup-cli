@@ -10,7 +10,7 @@ $ npm i -g lytup
 
 ### Upload files
 ```sh
-$ lytup -u <files>
+$ lytup <files>
 ```
 ![CLI-upload](http://d.pr/i/XVIM+)
 

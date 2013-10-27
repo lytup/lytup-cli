@@ -1,27 +1,78 @@
 #!/usr/bin/env node
 
-process.title = "lytup";
+var os = require('os');
+var program = require('commander');
+var sprintf = require('sprintf');
+var updateNotifier = require('update-notifier');
+var pkg = require('../package');
+var logger = require('../config').logger;
+var Config = require('../config');
+var Util = require('../lib').Util;
+var Channel = require('../lib').Channel;
+var progress = require('../lib').progress;
 
-var program = require("commander");
-var updateNotifier = require("update-notifier");
-var pkg = require("../package");
-var Channel = require("../lib").Channel;
+process.title = 'lytup';
 
 program.version(pkg.version)
-  .usage("[options] [file(s)|code]")
-  .option("-u, --upload", "upload files")
-  .option("-d, --download", "download files");
+	.usage('[options] <file(s) | code>')
+	.option('-d, --download', 'download files');
 
 program.parse(process.argv);
 
 var channel = new Channel();
-if (program.upload) channel.upload(program.args)
-else if (program.download) channel.download(program.args[0]);
+
+if (program.download) {
+	channel.download(program.args[0]);
+
+	channel.on('open', function() {
+		var req = request(Config.BASE_URI + '/d/' + this.id);
+		var info = sprintf('Receiving %s of files %s saving to \'%s\'',
+			Util.humanizeBytes(this.progress.total), "|".grey, this.downloadFile.name.cyan);
+		console.log(info.green);
+		req.pipe(fs.createWriteStream(this.downloadFile.name));
+	});
+} else {
+	channel.upload(program.args);
+
+	channel.on('create', function(data) {
+		var uri = Config.BASE_URI + '/' + this.id;
+		var filename = this.downloadFile.name;
+		var lytup = 'lytup -d ' + this.id;
+		var curl = 'curl -Lo \'' + filename + '\' ' + uri
+		var wget = 'wget -O \'' + filename + '\' ' + uri;
+
+		console.log('Download @ '.grey + lytup.cyan);
+		console.log('Other options:'.grey);
+		console.log('- Browser => '.grey + uri);
+		console.log('- Curl => '.grey + curl);
+		console.log('- Wget => '.grey + wget);
+	});
+
+	channel.on('open', function() {
+		var info = sprintf('Sending %s of files', Util.humanizeBytes(this.progress.total));
+		console.log(info.green);
+	});
+}
+
+channel.on('progress', function(msg) {
+	progress.display(msg.progress);
+});
+
+channel.on('error', function(err) {
+	logger.error(err);
+	process.exit();
+});
+
+channel.on('close', function(msg) {
+	progress.display(msg.progress);
+	console.log(os.EOL + msg.text.blue);
+	process.exit();
+})
 
 // Check for newer version of lytup
 var notifier = updateNotifier({
-  packageName: pkg.name,
-  packageVersion: pkg.version,
-  updateCheckInterval: 1000 * 60 * 60 * 4
+	packageName: pkg.name,
+	packageVersion: pkg.version,
+	updateCheckInterval: 1000 * 60 * 60 * 4
 });
 if (notifier.update) notifier.notify();

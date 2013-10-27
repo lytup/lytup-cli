@@ -10,12 +10,21 @@ $ npm i -g lytup
 
 ### Upload files
 ```sh
-$ lytup <files>
+$ lytup node-v0.10.21.pkg 
+Download @ lytup -d NccUr
+Other options:
+- Browser => http://lytup.com/NccUr
+- Curl => curl -Lo 'node-v0.10.21.pkg' http://lytup.com/NccUr
+- Wget => wget -O 'node-v0.10.21.pkg' http://lytup.com/NccUr
+Sending 8.7 MB of files
+[||||||||||||||||||||||||||||||] 100% |  696.6 KB/s
+Transfer complete
 ```
-![CLI-upload](http://d.pr/i/XVIM+)
 
 ### Download files
 ```sh
-lytup -d <code>
+$ lytup -d NccUr
+Receiving 8.7 MB of files | saving to 'node-v0.10.21.pkg'
+[||||||||||||||||||||||||||||||] 100% |  696.6 KB/s
+Transfer complete
 ```
-![CLI-download](http://d.pr/i/4L29+)

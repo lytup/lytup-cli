@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 var os = require('os');
+var fs = require('fs');
 var request = require('request');
 var program = require('commander');
 var sprintf = require('sprintf');
@@ -60,7 +61,7 @@ channel.on('progress', function(msg) {
 });
 
 channel.on('error', function(err) {
-	logger.error(err);
+	logger.error(err.message);
 	process.exit();
 });
 

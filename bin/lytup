@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 var os = require('os');
+var request = require('request');
 var program = require('commander');
 var sprintf = require('sprintf');
 var updateNotifier = require('update-notifier');

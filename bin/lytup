@@ -23,6 +23,21 @@ program.parse(process.argv);
 
 var channel = new Channel();
 
+channel.on('progress', function(msg) {
+	progress.display(msg.progress);
+});
+
+channel.on('error', function(err) {
+	logger.error(err.message);
+	process.exit();
+});
+
+channel.on('close', function(msg) {
+	progress.display(msg.progress);
+	console.log(os.EOL + msg.text.blue);
+	process.exit();
+});
+
 if (program.download) {
 	channel.download(program.args[0]);
 
@@ -44,10 +59,10 @@ if (program.download) {
 		var wget = 'wget -O \'' + filename + '\' ' + uri;
 
 		console.log('Download @ '.grey + lytup.cyan);
-		console.log('Other options:'.grey);
-		console.log('- Browser => '.grey + uri);
-		console.log('- Curl => '.grey + curl);
-		console.log('- Wget => '.grey + wget);
+		console.log('Other Options'.grey);
+		console.log('* Browser => '.grey + uri);
+		console.log('* Curl => '.grey + curl);
+		console.log('* Wget => '.grey + wget);
 	});
 
 	channel.on('open', function() {
@@ -55,21 +70,6 @@ if (program.download) {
 		console.log(info.green);
 	});
 }
-
-channel.on('progress', function(msg) {
-	progress.display(msg.progress);
-});
-
-channel.on('error', function(err) {
-	logger.error(err.message);
-	process.exit();
-});
-
-channel.on('close', function(msg) {
-	progress.display(msg.progress);
-	console.log(os.EOL + msg.text.blue);
-	process.exit();
-})
 
 // Check for newer version of lytup
 var notifier = updateNotifier({

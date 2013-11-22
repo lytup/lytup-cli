@@ -1,45 +1,99 @@
 #!/usr/bin/env node
 
-var os = require('os');
-var fs = require('fs');
-var request = require('request');
-var program = require('commander');
-var sprintf = require('sprintf');
-var updateNotifier = require('update-notifier');
-var pkg = require('../package');
-var logger = require('../config').logger;
-var Config = require('../config');
-var Util = require('../lib').Util;
-var Channel = require('../lib').Channel;
-var progress = require('../lib').progress;
+var os = require('os'),
+	fs = require('fs'),
+	request = require('request'),
+	program = require('commander'),
+	sprintf = require('sprintf'),
+	asciify = require('asciify'),
+	updateNotifier = require('update-notifier'),
+	pkg = require('../package'),
+	Config = require('../config'),
+	logger = Config.logger,
+	Util = require('../lib').Util,
+	Channel = require('../lib').Channel,
+	progress = require('../lib').progress;
 
 process.title = 'lytup';
 
-program.version(pkg.version)
-	.usage('[options] <file(s) | code>')
-	.option('-d, --download', 'download files');
-
-program.parse(process.argv);
+// Welcome message
+asciify('Lytup v' + pkg.version, {
+	font: 'mini'
+}, function(err, res) {
+	console.log(res.yellow)
+});
 
 var channel = new Channel();
+var spinner = ['|', '/', '-', '\\'];
+var out = process.stdout;
 
-channel.on('progress', function(msg) {
-	progress.display(msg.progress);
-});
+program.version(pkg.version)
+	.usage('[options] <file(s) | code>');
+program.parse(process.argv);
 
 channel.on('error', function(err) {
 	logger.error(err.message);
 	process.exit();
 });
 
-channel.on('close', function(msg) {
+channel.on('create', function() {
+	this.status = 'WAITING FOR RECEIVER';
+});
+
+channel.on('progress', function(msg) {
+	this.status = 'TRANSFERRING';
 	progress.display(msg.progress);
-	console.log(os.EOL + msg.text.blue);
+});
+
+channel.on('abort', function() {
+	this.status = 'TRANSFER ABORTED';
+})
+
+channel.on('close', function(msg) {
+	this.status = 'TRANSFER COMPLETED';
+	progress.display(msg.progress);
+	var text = '\u2714 ' + msg.text
+	console.log(os.EOL + text.green);
 	process.exit();
 });
 
-if (program.download) {
-	channel.download(program.args[0]);
+var channelId = program.args[0];
+
+if (fs.existsSync(channelId)) {
+	// Sender
+	channel.upload(program.args);
+
+	channel.on('create', function(data) {
+		var uri = Config.BASE_URI + '/' + this.id;
+		var filename = this.downloadFile.name;
+		var lytup = 'lytup ' + this.id;
+		var curl = 'curl -Lo \'' + filename + '\' ' + uri
+		var wget = 'wget -O \'' + filename + '\' ' + uri;
+
+		// Show spinner
+		this.spinner = setInterval(function() {
+			out.clearLine();
+			out.cursorTo(0);
+			var spin = spinner.shift();
+			spinner.push(spin);
+			out.write(spin + " WAITING FOR RECEIVER");
+		}, 100);
+
+		console.log('Download => '.grey + lytup.cyan + os.EOL);
+		console.log('More Options'.grey);
+		console.log(' * Browser => '.grey + uri);
+		console.log(' * Curl => '.grey + curl);
+		console.log(' * Wget => '.grey + wget + os.EOL);
+	});
+
+	channel.on('open', function() {
+		clearInterval(this.spinner);
+		// var info = sprintf('Sending %s of files', Util.humanizeBytes(this.progress.total));
+		// console.log(info.green);
+	});
+} else { 
+	// Receiver
+	channel.download(channelId);
 
 	channel.on('open', function() {
 		var req = request(Config.BASE_URI + '/d/' + this.id);
@@ -47,27 +101,6 @@ if (program.download) {
 			Util.humanizeBytes(this.progress.total), "|".grey, this.downloadFile.name.cyan);
 		console.log(info.green);
 		req.pipe(fs.createWriteStream(this.downloadFile.name));
-	});
-} else {
-	channel.upload(program.args);
-
-	channel.on('create', function(data) {
-		var uri = Config.BASE_URI + '/' + this.id;
-		var filename = this.downloadFile.name;
-		var lytup = 'lytup -d ' + this.id;
-		var curl = 'curl -Lo \'' + filename + '\' ' + uri
-		var wget = 'wget -O \'' + filename + '\' ' + uri;
-
-		console.log('Download => '.grey + lytup.cyan);
-		console.log('Other Options'.grey);
-		console.log('* Browser => '.grey + uri);
-		console.log('* Curl => '.grey + curl);
-		console.log('* Wget => '.grey + wget);
-	});
-
-	channel.on('open', function() {
-		var info = sprintf('Sending %s of files', Util.humanizeBytes(this.progress.total));
-		console.log(info.green);
 	});
 }
 

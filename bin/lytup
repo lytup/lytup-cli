@@ -4,9 +4,9 @@ var os = require('os'),
 	fs = require('fs'),
 	request = require('request'),
 	program = require('commander'),
-	sprintf = require('sprintf'),
 	asciify = require('asciify'),
 	updateNotifier = require('update-notifier'),
+	_ = require("lodash"),
 	pkg = require('../package'),
 	Config = require('../config'),
 	logger = Config.logger,
@@ -40,20 +40,14 @@ channel.on('create', function() {
 	this.status = 'WAITING FOR RECEIVER';
 });
 
-channel.on('progress', function(msg) {
-	this.status = 'TRANSFERRING';
-	progress.display(msg.progress);
+channel.on('progress', function(data) {
+	_.assign(channel, data);
+	this.displayProgress();
 });
 
-channel.on('abort', function() {
-	this.status = 'TRANSFER ABORTED';
-})
-
-channel.on('close', function(msg) {
-	this.status = 'TRANSFER COMPLETED';
-	progress.display(msg.progress);
-	var text = '\u2714 ' + msg.text
-	console.log(os.EOL + text.green);
+channel.on('close', function(data) {
+	_.assign(channel, data);
+	this.displayProgress(true);
 	process.exit();
 });
 
@@ -64,9 +58,9 @@ if (fs.existsSync(channelId)) {
 	channel.upload(program.args);
 
 	channel.on('create', function(data) {
-		var uri = Config.BASE_URI + '/' + this.id;
+		var uri = Config.BASE_URI + '/' + this.code;
 		var filename = this.downloadFile.name;
-		var lytup = 'lytup ' + this.id;
+		var lytup = 'lytup ' + this.code;
 		var curl = 'curl -Lo \'' + filename + '\' ' + uri
 		var wget = 'wget -O \'' + filename + '\' ' + uri;
 
@@ -88,19 +82,13 @@ if (fs.existsSync(channelId)) {
 
 	channel.on('open', function() {
 		clearInterval(this.spinner);
-		// var info = sprintf('Sending %s of files', Util.humanizeBytes(this.progress.total));
-		// console.log(info.green);
 	});
-} else { 
+} else {
 	// Receiver
 	channel.download(channelId);
 
-	channel.on('open', function() {
-		var req = request(Config.BASE_URI + '/d/' + this.id);
-		var info = sprintf('Receiving %s of files %s saving to \'%s\'',
-			Util.humanizeBytes(this.progress.total), "|".grey, this.downloadFile.name.cyan);
-		console.log(info.green);
-		req.pipe(fs.createWriteStream(this.downloadFile.name));
+	channel.on('get', function() {
+		console.log('Saving to '.grey + this.downloadFile.name.cyan + os.EOL);
 	});
 }
 

@@ -58,19 +58,20 @@ if (fs.existsSync(channelId)) {
 	channel.upload(program.args);
 
 	channel.on('create', function(data) {
-		var uri = Config.BASE_URI + '/' + this.code;
-		var filename = this.downloadFile.name;
-		var lytup = 'lytup ' + this.code;
+		var self = this;
+		var uri = Config.BASE_URI + '/' + self.code;
+		var filename = self.downloadFile.name;
+		var lytup = 'lytup ' + self.code;
 		var curl = 'curl -Lo \'' + filename + '\' ' + uri
 		var wget = 'wget -O \'' + filename + '\' ' + uri;
 
 		// Show spinner
-		this.spinner = setInterval(function() {
+		self.spinner = setInterval(function() {
 			out.clearLine();
 			out.cursorTo(0);
 			var spin = spinner.shift();
 			spinner.push(spin);
-			out.write(spin + " WAITING FOR RECEIVER");
+			out.write((spin + ' ' + self.status).red);
 		}, 100);
 
 		console.log('Download => '.grey + lytup.cyan + os.EOL);
@@ -88,7 +89,8 @@ if (fs.existsSync(channelId)) {
 	channel.download(channelId);
 
 	channel.on('get', function() {
-		console.log('Saving to '.grey + this.downloadFile.name.cyan + os.EOL);
+		var file = this.files.length === 1 ? this.downloadFile.name : this.code
+		console.log('Saving to '.grey + file.cyan + os.EOL);
 	});
 }
 

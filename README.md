@@ -10,21 +10,33 @@ $ npm i -g lytup
 
 ### Upload files
 ```sh
-$ lytup node-v0.10.21.pkg 
-Download @ lytup -d NccUr
-Other options:
-- Browser => http://lytup.com/NccUr
-- Curl => curl -Lo 'node-v0.10.21.pkg' http://lytup.com/NccUr
-- Wget => wget -O 'node-v0.10.21.pkg' http://lytup.com/NccUr
-Sending 8.7 MB of files
-[||||||||||||||||||||||||||||||] 100% |  696.6 KB/s
-Transfer complete
+$ lytup node-v0.10.22.pkg chromecast-setup.1.3.0.428.dmg 
+                               _             _  
+ |       _|_       ._         / \     /|      ) 
+ |_  \/   |_  |_|  |_)    \/  \_/  o   |  o  /_ 
+     /             |                            
+
+Download => lytup 90W1C
+
+More Options
+ * Browser => http://localhost:8080/90W1C
+ * Curl => curl -Lo '90W1C.zip' http://localhost:8080/90W1C
+ * Wget => wget -O '90W1C.zip' http://localhost:8080/90W1C
+
+[||||||||||||||||||||] 100% | 11.5 MB of 11.5 MB | -- | --
+✔ TRANSFER COMPLETED
 ```
 
 ### Download files
 ```sh
-$ lytup -d NccUr
-Receiving 8.7 MB of files | saving to 'node-v0.10.21.pkg'
-[||||||||||||||||||||||||||||||] 100% |  696.6 KB/s
-Transfer complete
+$ lytup 90W1C
+                               _             _  
+ |       _|_       ._         / \     /|      ) 
+ |_  \/   |_  |_|  |_)    \/  \_/  o   |  o  /_ 
+     /             |                            
+
+Saving to 90W1C
+
+[||||||||||||||||||||] 100% | 11.5 MB of 11.5 MB | -- | --
+✔ TRANSFER COMPLETED
 ```

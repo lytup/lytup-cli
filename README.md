@@ -16,27 +16,27 @@ $ lytup node-v0.10.22.pkg chromecast-setup.1.3.0.428.dmg
  |_  \/   |_  |_|  |_)    \/  \_/  o   |  o  /_ 
      /             |                            
 
-Download => lytup 90W1C
+Download => lytup 0fk3N
 
 More Options
- * Browser => http://localhost:8080/90W1C
- * Curl => curl -Lo '90W1C.zip' http://localhost:8080/90W1C
- * Wget => wget -O '90W1C.zip' http://localhost:8080/90W1C
+ * Browser => http://lytup.com/0fk3N
+ * Curl => curl -Lo '0fk3N.zip' http://lytup.com/0fk3N
+ * Wget => wget -O '0fk3N.zip' http://lytup.com/0fk3N
 
-[||||||||||||||||||||] 100% | 11.5 MB of 11.5 MB | -- | --
+[||||||||||||||||||||] 100% | 11.5 MB of 11.5 MB | 695.0 KB/s | 00:00:00 ETA
 ✔ TRANSFER COMPLETED
 ```
 
 ### Download files
 ```sh
-$ lytup 90W1C
+$ lytup 0fk3N
                                _             _  
  |       _|_       ._         / \     /|      ) 
  |_  \/   |_  |_|  |_)    \/  \_/  o   |  o  /_ 
      /             |                            
 
-Saving to 90W1C
+Saving to 0fk3N
 
-[||||||||||||||||||||] 100% | 11.5 MB of 11.5 MB | -- | --
+[||||||||||||||||||||] 100% | 11.5 MB of 11.5 MB | 695.0 KB/s | 00:00:00 ETA
 ✔ TRANSFER COMPLETED
 ```

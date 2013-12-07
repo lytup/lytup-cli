@@ -1,6 +1,6 @@
 {
   "name": "lytup",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "CLI for http://lytup.com",
   "main": "index.js",
   "scripts": {
@@ -21,18 +21,18 @@
     "url": "https://github.com/lytup/lytup-cli/issues"
   },
   "dependencies": {
-    "ws": "~0.4.29",
-    "commander": "~2.0.0",
-    "mime": "~1.2.11",
+    "ws": "~0.4.31",
     "async": "~0.2.9",
-    "lodash": "~1.3.1",
+    "commander": "~2.1.0",
+    "mime": "~1.2.11",
+    "lodash": "~2.4.1",
     "colors": "~0.6.2",
-    "request": "~2.27.0",
-    "string": "~1.5.1",
-    "update-notifier": "~0.1.5",
+    "string": "~1.7.0",
+    "update-notifier": "~0.1.7",
     "winston": "~0.7.2",
     "asciify": "~1.3.3",
-    "adm-zip": "~0.4.3"
+    "request": "~2.29.0",
+    "unzip": "~0.1.9"
   },
   "preferGlobal": true,
   "bin": {
